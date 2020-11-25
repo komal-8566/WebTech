@@ -1,0 +1,101 @@
+
+{% extends "orders/base.html" %}
+{% load static %}
+{% block title %}
+  Welcome!
+{% endblock title %}
+
+{% block content %}
+
+      <div class="container-fluid">
+
+        
+          <!-- <h1 class='toptext'>  Welcome {{user.first_name}}! </h1>  -->
+            
+               <div class='list-group'>
+                <a href="/"><h1 class='text-center pt-3 pl-5' style="font-family:'Luckiest Guy', cursive; font-size: 60px;">&nbsp; Menu <i class="material-icons" style="font-size: 40px;">restaurant</i> </h1></a>
+                <div class="row" style="height: 550px;">
+                  <div class="col-lg-1 col-md-1 col-12" style="height:500px"></div>
+                {% for category in Category %}
+                    
+                    <!-- <a href="{% url 'listmenu' category.name %}" class="list-group-item list-group-item-action"><img id='{{category}}'>{{ category }}<small style='text-align:right'>(Click to view)</small> </a> -->
+                      <div class="col-md-5 col-lg-5 col-12" style="height:500px">
+                        <div class="service-box" style="height: 500px;">
+                          <img id='{{category}}' class="service-icon yellow" style="height: 500px;">  
+                            <!-- <div class="service-icon yellow"style="height: 400px;">
+                                
+                            </div> -->
+                            <div class="service-content" style="height: 500px;">
+                                <div class="pb-2" style="padding-top: 15%;">
+                                  <h1 class="text-center" style="font-size: 50px;">{{ category }}</h1>
+                                </div>
+                                <div class="pt-3">
+                                  <a href="{% url 'listmenu' category.name %}"><button class="btn btn-outline-danger" style="font-size: 30px;">Click here</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-1 col-lg-1 col-12" style="height:400px"></div> -->
+                  {% if forloop.counter|divisibleby:2 and forloop.counter > 0 and not forloop.last %}
+                  </div>
+                  <div class="row" style="height: 550px;">
+                    <div class="col-lg-1 col-md-1 col-12" style="height:500px"></div>
+                  {% endif %}
+                    {% empty %}
+                        <p>No categories</p>
+                {% endfor %}
+                </div>
+                <div class="row" style="height: 550px;">
+                  <div class="col-lg-4 col-md-4 col-12"></div>
+                  <div class="col-lg-4 col-md-4 col-12">
+
+                    <div class="service-box" style="height: 450px;">
+                      <div class="service-icon yellow"style="height: 450px;">
+                              <img id='' src=" {%  static 'orders/images/Toppings.jpg' %}" width='100%' height='100%'>
+                      </div>
+                      <div class="service-content"  style="height: 450px;">
+                          <div class="pb-2" style="padding-top: 15%;">
+                            <h1 class="text-center" style="font-size: 50px;">Toppings</h1>
+                          </div>
+                          <div class="pt-3">
+                            <a href="{% url 'listmenu' 'Toppings' %}"><button class="btn btn-outline-danger" style="font-size: 30px;">Click here</button></a>
+                          </div>
+                      </div>
+                  </div>
+
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-12"></div>
+                </div>
+                    <!-- <a href="{% url 'listmenu' 'Toppings' %} " class='list-group-item list-group-item-action'> <img src=" {%  static 'orders/images/Toppings.jpg' %}" width='30%' height='30%'> Toppings<small style='text-align:right'>(Click to view)</small></a> -->
+                </div> 
+
+      </div> 
+  
+<script>
+  rp=document.getElementById('Regular Pizza');
+  rp.src="{% static 'orders/images/Regular Pizza.jpg' %}";
+  rp.style.width="100%";
+  rp.style.height='100%'
+  sp=document.getElementById('Sicilian Pizza');
+  sp.src="{% static 'orders/images/Sicilian Pizza.jpg' %}";
+  sp.style.width="100%";
+  sp.style.height='100%';
+  pas=document.getElementById('Pasta');
+  pas.src="{% static 'orders/images/Pasta.jpg' %}";
+  pas.style.width="100%";
+  pas.style.height="100%";
+  Salad=document.getElementById('Salad');
+  Salad.src="{% static 'orders/images/Salad.jpg' %}";
+  Salad.style.width="100%";
+  Salad.style.height='100%';
+  Dinner=document.getElementById('Dinner Platters');
+  Dinner.src="{% static 'orders/images/Dinner Platters.jpg' %}";
+  Dinner.style.width='100%';
+  Dinner.style.height='100%';
+  sub=document.getElementById('Subs');
+  sub.src="{% static 'orders/images/Subs.jpg' %}"
+  sub.style.width='100%';
+  sub.style.height='100%';
+</script> 
+
+{% endblock content %}

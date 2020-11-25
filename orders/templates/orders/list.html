@@ -1,0 +1,271 @@
+{% extends "orders/base.html" %}
+{% load static %}
+{% block title %}
+  {{name}}
+{% endblock title %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <a href="/"><h1 class="text-center text-dark pt-5" style="font-size: 40px;">Menu : {{name}} <i class="material-icons">restaurant</i></h1></a>
+    <hr>
+    
+    <!-- This is product grid -->
+  
+    <div class="row my-5">
+      <div class="col-lg-2 col-md-2 col-12"></div>
+    {% for product in products %}
+      <div class="col-lg-4 col-md-4 product-grid">
+        <div class="image">
+          <a href="#">
+            <img src="{% static 'orders/images/' %}{{name}}{{product.name}}.jpg" alt="{{name}}{{product.name}}" class="w-100 productImages">
+            {% if not flag or not flag2 %}
+            
+              <div class="overlay">
+                <div class="detail"><a href="#" data-toggle="modal" data-target="#myModal{{product.name}}" id="{{product.name}}"><button class="btn btn-outline-primary buy">View Details</button></a></div>
+              </div>
+
+               <!--View Details -->
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-12">
+                  <div class="modal fade" id="myModal{{product.name}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="text-center">{{product.name}}</h1>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          {% if not flag %}
+                          <h2>Small: {{product.small_price}}</h2>
+                          <h2>Large: {{product.large_price}}</h2>
+                          {% elif not flag2 %}
+                          <h2>Price: {{product.large_price}}</h2>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- XYX -->
+            
+            {% endif %}
+          </a>
+
+        </div>
+        <h1 class="text-center" id="productName">{{product.name}}</h1>
+        {% if not flag or not flag2 %}
+          {% if product.is_pizza %} <!--Pizza-->
+            
+            {% if product.max_toppings > 0 %}
+              
+              <div class="text-center"><a href="#" class="btn btn-primary buy" data-toggle="modal" data-target="#myTopp{{product.name}}" id="{{product.name}}" style="height:50px; width: 150px; font-size: 20px;">Buy</a></div>
+              <!--Modal-->
+              <form action="{% url 'add_to_cart' %}" method='post' style="padding-left: 10%; padding-right: 10%;">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-12">
+                    <div class="modal fade" id="myTopp{{product.name}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="text-center">Toppings</h1>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            {% with ''|center:product.max_toppings as range %}
+                              {% for _ in range %}
+                                <div class="row" style="font-size: 25px;">
+                                    <br><br><br>
+                                    <div class="col-lg-5 col-md-5 col-12"><label>Topping{{forloop.counter}}:</label></div>
+                                    <div class="col-lg-7 col-md-7 col-12">
+                                      <select name="custom" style="width: 170px;">
+                                        <option value='None'>Toppings</option>
+                                        {% for topping in toppings %}
+                                            <option class="dropdown-item" value="{{ topping.name }}" >{{ topping.name }}</option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>   
+                              {% endfor %}
+                            {% endwith %}
+                          </div>
+                          <div class="modal-footer">
+                            <div class="container-fluid text-center"><button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addToCart{{product.name}}" id="{{product.name}}" style="width: 150px;">Buy</button></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-12">
+                    <div class="modal fade" id="addToCart{{product.name}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="text-center">{{ product.name }}</h1>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                          
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 col-12">
+                                <h2>Small or large:</h2>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-12">
+                                  <input type='hidden' name='subcategory' value='{{product.name}}'>
+                                  <input type="hidden" id="type" name="type" value="{{name}}">
+                                  
+                                  <select name='size' style="width: 170px; font-size: 25px;">
+                                    <option value="{{product.small_price}}" style="font-size: 25px;">Small</option>
+                                    <option value="{{product.large_price}}" style="font-size: 25px;">Large</option>
+                                  </select>
+                              </div>
+                            </div>
+                            <br><br>
+                            <div class="row text-center">
+                              <div class="text-center" style="margin-left: 33%;">
+                                <button type="submit" class="btn btn-primary" style="width: 170px;">Add to Cart <i class='fas fa-shopping-cart'></i></button>
+                              </div>
+                            </div>
+                        
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            {% else %} 
+              <div class="text-center"><a href="#" class="btn btn-primary buy" data-toggle="modal" data-target="#addToCart{{product.name}}" id="{{product.name}}" style="height:50px; width: 150px; font-size: 20px;">Buy</a></div>
+              <!--Add to cart-->
+              
+              <form action="{% url 'add_to_cart' %}" method='post' style="padding-left: 10%; padding-right: 10%;">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-12">
+                    <div class="modal fade" id="addToCart{{product.name}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="text-center">{{ product.name }}</h1>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                           
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 col-12">
+                                <h2>Small or large:</h2>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-12">
+                                  <input type='hidden' name='subcategory' value='{{product.name}}'>
+                                  <input type="hidden" id="type" name="type" value="{{name}}">
+                                  <!-- <select name="custom" style="width: 170px;"></select> -->
+                                  <select name='size' style="width: 170px; font-size: 25px;">
+                                    <option value="{{product.small_price}}" style="font-size: 25px;">Small</option>
+                                    <option value="{{product.large_price}}" style="font-size: 25px;">Large</option>
+                                  </select>
+                              </div>
+                            </div>
+                            <br><br>
+                            <div class="row text-center">
+                              <div class="text-center" style="margin-left: 33%;">
+                                
+                                <button type="submit" class="btn btn-primary" style="width: 170px;">Add to Cart <i class='fas fa-shopping-cart'></i></button>
+                              </div>
+                            </div>
+                         
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            {% endif %}
+
+            {% elif not flag2 and flag %} <!--Salads Pasta-->
+            <form action="{% url 'add_to_cart' %}" method='post' style="padding-left: 10%; padding-right: 10%;">
+              {% csrf_token %}
+              <input type='hidden' name='subcategory' value='{{product.name}}'>
+              <input type="hidden" id="type" name="type" value="{{name}}">
+              <input type='hidden' name='size' value='{{product.large_price}}'>
+              <div class="text-center"><button type="submit" class="btn btn-primary buy" style="height:50px; width: 150px; font-size: 20px;">Add to Cart<i class='fas fa-shopping-cart'></i></button></div>
+            </form>
+            
+            {% elif not flag2 and not flag %} <!--Subs Dinner Platters-->
+            <!-- <div class="text-center"><a class="btn btn-primary buy" style="height:50px; width: 150px; font-size: 20px;">Buy</a></div> -->
+            <div class="text-center"><a href="#" class="btn btn-primary buy" data-toggle="modal" data-target="#addToCart{{product.name}}" id="{{product.name}}" style="height:50px; width: 150px; font-size: 20px;">Buy</a></div>
+            <form action="{% url 'add_to_cart' %}" method='post' style="padding-left: 10%; padding-right: 10%;">
+              {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="modal fade" id="addToCart{{product.name}}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="text-center">{{ product.name }}</h1>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                       
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 col-12">
+                            <h2>Small or large:</h2>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-12">
+                              <input type='hidden' name='subcategory' value='{{product.name}}'>
+                              <input type="hidden" id="type" name="type" value="{{name}}">
+                              <select name='size' style="width: 170px; font-size: 25px;">
+                                <option value="{{product.small_price}}" style="font-size: 25px;">Small</option>
+                                <option value="{{product.large_price}}" style="font-size: 25px;">Large</option>
+                              </select>
+                          </div>
+                        </div>
+                        <br><br>
+                        <div class="row text-center">
+                          <div class="text-center" style="margin-left: 33%;">
+                            <button type="submit" class="btn btn-primary" style="width: 170px;">Add to Cart <i class='fas fa-shopping-cart'></i></button>
+                          </div>
+                        </div>
+                     
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+
+            
+            
+            {% endif %}
+
+        {% endif %}
+      </div>
+    <div class="col-lg-1 col-md-1 col-12"></div>
+    {% if forloop.counter|divisibleby:2 and forloop.counter > 0 and not forloop.last %}
+      <div class="col-lg-1 col-md-1 col-12"></div>      
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-12"></div>
+    {% endif %}
+    {% endfor %}
+    </div>
+ 
+
+  <div class="row pt-5" style="margin-bottom: 170px; margin-left: 10%;">
+    <form action="{% url 'checkout' %}" method='post' style='background-color:inherit; margin-left: 40%;'>
+      {% csrf_token %}
+      <input type='submit' value='Review and Place Order' class='btn btn-primary' style="font-size: 30px;">
+    </form>
+  </div>
+
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/fd0904c3b1.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/yourcode.js"></script>
+  <script src="http://kit.fontawesome.com/44f557ccce.js"></script>
+  <link rel="stylesheet" href="{% static 'orders/base.css' %}"/>
+  
+  {% block links %}
+  
+  {% endblock links %}
+  <title> {% block title %} {% endblock title %} </title>
+
+
+  
+</head>
+<body>
+    <div>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: burlywood; font-size:20px;">
+      <a class="navbar-brand" href="/" style="font-size: 25px;"> Cheesilicious </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
+          
+              {% if user.username %}
+              <li class="nav-item dropdown">
+                <a class='nav-link active dropdown-toggle' href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;"> Welcome {{user.first_name}} </a> 
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'see_order_status' %}" style="font-size: 25px; margin-top: 2px;">View Activity <i class="fa fa-tasks"></i></a>
+                  <a class="dropdown-item pt-4" href="{% url 'logout' %}" style="font-size: 25px; margin-top: 5px;">Logout <i class="fa fa-sign-out"></i></a>
+                </div>
+
+              </li>
+              {% if user.is_superuser %}
+                <li class="nav-item"><a class="nav-link active" href="{% url 'curr_orders' %}" style="font-size: 25px;">All orders</a></li>  
+              {% endif %}
+              
+              <li class='nav-item'><a class='nav-link active' href='{% url "checkout" %}'style="font-size: 25px;">Cart(<span>{{ length }}</span>)<i class='fa fa-shopping-cart'></i></a> 
+              
+              {% else %}
+              <li class="nav-item active"><a class="nav-link" href="{% url 'signup' %}" style="font-size: 25px;">Sign Up</a></li>                
+              <li class="nav-item active"><a class="nav-link" href="{% url 'login' %}" style="font-size: 25px;">Login</a></li>
+              {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+    <div id="mySidenav" class="sidenav">
+      <a href="{% url 'faq' %}" id="FAQ">FAQ<i class="fa fa-question-circle"></i></a>
+      <a href="{% url 'index' %}" id="menu">Menu <i class="material-icons">restaurant</i></a>
+      <a href="{% url 'home' %}" id="projects">Home<i class='fa fa-home'></i></a>
+      <a href="{% url 'contact' %}" id="contact">Contact Us<i class='fa fa-envelope'></i></a>
+      <a href="{% url 'reviews' %}" id="reviews">Reviews<i class='fa fa-star'></i></a>
+    </div>
+      </div>
+    {% if messages %}
+    <ul class="messages">
+      {% for msg in messages %}       
+      <li>
+          <div class="alert alert-{{msg.level_tag}}" role="alert" >
+          {{msg.message}}
+          </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="container-fluid px-5">
+      {% block content %}
+    
+    {% endblock content %}
+    </div>
+  </body>
+</html>

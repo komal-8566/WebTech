@@ -1,0 +1,49 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  All Orders
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+  {% if not order_details %}
+    <!-- <div class='boxed' style='margin:10%;padding:10%'> No orders placed </div> -->
+    <h1 class='toptext text-center'> No orders placed</h1>
+  {% else %}
+
+  {% for order in order_details %}
+  <div class="container-fluid" style="margin-top: 1%;margin-bottom:1% ;background-color:inherit">
+ 
+  <center>  <div class="card" style='width:75%'>
+      <div class="card-header text-center">Order Number: {{order.0}}, User Id: {{order.1}}</div>
+      <div class="card-body">
+      {% for o in order %}
+        {% if o.0 %}
+        <h2 class="card-text">{{o.0}} : {{o.1}} </h2>
+        {%endif %}
+      {% endfor %}
+    </div>
+    <div class="card-footer">
+    {% if order.2 %}
+     <center> <form method='post' action='{% url "mark_order" %}' class='form-control' style='background-color:inherit;width:fit-content;border:none;'>
+        {% csrf_token %}
+        <h1 class="card-text" style="margin-top: 1%;">Mark order {{order.0}} as &nbsp;
+          <input type='submit' value='complete' class='btn btn-primary' style="font-size: 20px; color: black;"> 
+        </h1>
+        <input type='hidden' id="ordnum" name="ordnum" value='{{order.0}}'>
+       
+        
+      </form></center>
+    {% else %}
+    Order Status: Completed!
+    {% endif %}
+    </div>
+  </div></center>
+  </div>
+{% endfor %}
+</div>
+  
+
+{%endif%}
+{% endblock content %}

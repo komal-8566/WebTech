@@ -1,0 +1,31 @@
+{% extends "orders/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+  Login
+{% endblock title %}
+{% block content %}
+
+
+<div class="row pt-5">
+  <div class="col-lg-4 col-md-4 col-12"></div>
+    <div class="col-lg-5 col-md-5 col-12">
+      <h1 class="text-center"> Login </h1>
+      <form action=" {%  url 'login' %} " class="ui form" method='post' autocomplete='off'>
+        {% csrf_token %}
+        <div class="field" style="font-size: 20px;">
+          {{form|crispy}}
+        </div>  
+        <div class="field">
+          <input type='submit' class='btn btn-success' value='Login' style="width: 50%; margin-left: 30%;">
+        </div>
+      </form>
+      
+      <div class='row pb-5'>
+        <di class="container text-center" style="margin-left: 23%;">
+          <h1>Don't have an account? <a href = "{% url 'signup' %}"> Sign Up Now!</a></h1></div>
+        </di>
+        </div>
+
+  <div class="col-lg-2 col-md-2 col-12"></div>
+</div>
+{% endblock content %}

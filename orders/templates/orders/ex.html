@@ -1,0 +1,153 @@
+<div class="row">
+    <div class="col-md-8 offset-md-2 col-10 offset-1 mt-5">
+        <h2 class="text-center text-uppercase text-dark" style="font-size:50px"><strong>Reviews</strong></h2>
+        
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            {% if condition %}
+            {% for userReview in userReviews %}
+            <!--  -->
+
+
+            <!--  -->
+            <div class="carousel-inner mt-4 mb-5 border border-primary">
+
+                <div class="carousel-item text-center active" style="margin-top: 50px; margin-bottom: 50px;">
+                    <div class="img-box p-1 border rounded-circle m-auto">
+                        <img class="d-block w-100 rounded-circle" src="{% static 'orders/images/usericon.png' %}" alt="First slide">
+                    </div>
+                    <h5 class="mt-4 mb-0" style="font-size:30px"><strong class="text-dark text-uppercase">{{ userReview.name }}</strong></h5>
+                    <h3>
+                        {% if userReview.star == 1 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif userReview.star == 2 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif userReview.star == 3 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif userReview.star == 4%}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif userReview.star == 5 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        {% endif %}
+                    </h3>
+                    <p class="m-0 pt-3" style="font-size: 25px;font-weight: bolder; color: green;">{{ userReview.description }}</p>
+                    <form method='post' action='{% url "delReview" %}' style='background-color:inherit; font-size: 15px;'>
+                        {% csrf_token %}
+                        <input type='submit' value='Delete Review' class='btn btn-danger mt-2' style='color:black;text-decoration:none; font-size: 15px; margin-left: 15px;'>
+                    </form>
+                </div>  
+            </div>
+            {% endfor %}
+            {% endif %}
+            
+            {% for review in reviews %}
+            <div class="carousel-inner mt-4 mb-5 border border-primary">
+            
+                <div class="carousel-item text-center active" style="margin-top: 50px; margin-bottom: 50px;">
+                    <div class="img-box p-1 border rounded-circle m-auto">
+                        <img class="d-block w-100 rounded-circle" src="{% static 'orders/images/usericon.png' %}" alt="First slide">
+                    </div>
+                    <h5 class="mt-4 mb-0" style="font-size:30px"><strong class="text-dark text-uppercase">{{ review.name }}</strong></h5>
+                    <h3>
+                        {% if review.star == 1 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif review.star == 2 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif review.star == 3 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif review.star == 4%}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif review.star == 5 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        {% endif %}
+                    </h3>
+                    <p class="m-0 pt-3" style="font-size: 25px;font-weight: bolder; color: green;">{{ review.description}}</p>
+                </div> 
+           
+            </div>
+          {% endfor %}
+        </div>
+        {% if not condition %}
+        <div class="row my-5">
+            <h1 class="text-center" style="margin-left:15%;">Provide feedback to help others! &nbsp;</h1>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#feedback">
+                Give Feedback
+            </button>
+            <div class="row">
+                  <div class="modal fade" id="feedback">
+                    <div class="modal-dialog">
+                      <div class="modal-content py-5 px-5">
+                        <div class="modal-header">
+                          <h1 class="text-center">Feedback</h1>
+                        </div>
+                          <form method='post' action='{% url "addReview" %}' style='background-color:inherit; font-size: 15px;'>
+                            {% csrf_token %}
+                            <h1> 
+                                <div class="rate">
+                                    <input type="radio" id="star5" name="rate" value=5 />
+                                    <label for="star5" title="text">5 stars</label>
+                                    <input type="radio" id="star4" name="rate" value=4 />
+                                    <label for="star4" title="text">4 stars</label>
+                                    <input type="radio" id="star3" name="rate" value=3 />
+                                    <label for="star3" title="text">3 stars</label>
+                                    <input type="radio" id="star2" name="rate" value=3 />
+                                    <label for="star2" title="text">2 stars</label>
+                                    <input type="radio" id="star1" name="rate" value=1 />
+                                    <label for="star1" title="text">1 star</label>
+                                  </div>
+                            </h1>
+                            <input type="text" class="form-control" name="desc" placeholder="Type text" style="margin-bottom: 3%;font-size: 20px;">
+                            <button type="submit" class="btn btn-primary">&nbsp;Submit</button>
+                          </form> 
+                        
+                      </div>
+                    </div>
+                  </div>
+                
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>            
+</div>
+
+{% if forloop.counter|divisibleby:2 and forloop.counter > 0 and not forloop.last %}
