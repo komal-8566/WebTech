@@ -15,7 +15,7 @@ from django.contrib.auth import get_user_model
 
 def index(request):
     if not request.user.is_authenticated:
-        messages.add_message(request, messages.INFO, 'You neend to login first!')
+        messages.add_message(request, messages.INFO, 'You need to login first!')
         return HttpResponseRedirect(reverse("login"))
     else:
         # print(request.user.id)
@@ -34,7 +34,6 @@ def index(request):
 def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
-        print("form = ", form)
         if form.is_valid():
             form.save()
             messages.add_message(request,messages.SUCCESS,'User registered successfully!')
@@ -64,7 +63,6 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    form = AuthenticationForm()
     messages.add_message(request,messages.SUCCESS,"Logged out from Cheesilicious")
     return HttpResponseRedirect(reverse('login'))
 
